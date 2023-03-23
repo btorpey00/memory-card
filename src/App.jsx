@@ -1,33 +1,60 @@
 import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
+import Header from './components/Header'
+import Card from './components/Card'
+import shuffle from 'lodash.shuffle'
+import cardArray from './components/CardInfo'
 import './App.css'
 
 function App() {
-  const [count, setCount] = useState(0)
+  const [currentScore, setCurrentScore] = useState(0)
+  const [bestScore, setBestScore] = useState(0)
+  const [clickedCards, setClickedCards] = useState([])  
+  
+
+  function onCardClick(e){
+    if (clickedCards.includes(e)) {
+      console.log('Already Clicked');
+      resetGame();
+    }
+    else{ 
+      incrementScore();
+      setClickedCards(clickedCards.concat(e));
+      console.log(clickedCards);
+    }
+  }
+
+  function incrementScore() {
+    setCurrentScore(currentScore + 1);
+    checkBestScore();
+  }
+
+  function checkBestScore() {
+    if (currentScore >= bestScore) {
+      setBestScore(bestScore + 1);
+    }
+  }
+
+  function resetGame() {
+    setCurrentScore(0);
+    setClickedCards([]);
+  }
+
+  const listItems = cardArray().map((item) => <li key={item.name} ><Card onCardClick={onCardClick} name={item.name} src={item.src} /></li>);
 
   return (
     <div className="App">
+      <Header currentScore={currentScore} bestScore={bestScore} />
       <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://reactjs.org" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
+        <ul className='card-container'>{shuffle(listItems)}</ul>
       </div>
-      <h1>Vite + React</h1>
       <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
+        <button onClick={incrementScore}>
+          Current Score is {currentScore}
         </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
+        <button onClick={resetGame}>
+          Reset
+        </button>
       </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
     </div>
   )
 }
