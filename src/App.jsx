@@ -48,9 +48,6 @@ function App() {
         <ul className='card-container'>{shuffle(listItems)}</ul>
       </div>
       <div className="card">
-        <button onClick={incrementScore}>
-          Current Score is {currentScore}
-        </button>
         <button onClick={resetGame}>
           Reset
         </button>
