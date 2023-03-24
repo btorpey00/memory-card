@@ -2,7 +2,7 @@
   "name": "memory-card",
   "private": true,
   "version": "0.0.0",
-  "homepage": "https://btorpey00.github.io/memory-card",
+  "homepage": "https://btorpey00.github.io/memory-card/",
   "type": "module",
   "scripts": {
     "dev": "vite",
