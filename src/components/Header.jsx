@@ -6,10 +6,10 @@ export default function Header(props) {
 
     return (
         <div className="header">
-            <h2>Pokemon Memory Card Game</h2>
+            <h1>Pokemon Memory Card Game</h1>
             <p className="instructions">Do not click on the same character more than once</p>
-            <p>Current Score: {currentScore} </p>
-            <p>Best Score: {bestScore}</p>
+            <p className='score-display'>Current Score: {currentScore} </p>
+            <p className='score-display'>Best Score: {bestScore}</p>
         </div>
     )
 };
