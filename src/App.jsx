@@ -66,13 +66,15 @@ function App() {
       <div>
         <ul className='card-container'>{shuffle(listItems)}</ul>
       </div>
-      <div className='game-over'>
-        {gameOver && gameOverText}
+      <div className='game-over' style={{display: gameOver ? 'flex' : 'none'}} >
+        <div className="game-over-content">
+          <p>{gameOver && gameOverText}</p>
+          <button onClick={resetGame}>Play Again</button>
+        </div>
       </div>      
       <div className="card">
         <button onClick={resetGame}>
-          {!gameOver && 'Reset'}
-          {gameOver && 'Play Again'}
+          Reset
         </button>
       </div>
       

@@ -36,6 +36,27 @@ img {
   scale: 1.1;
 }
 
+.game-over {
+  position: absolute;
+  height: 100%;
+  width: 100%;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: rgba(0, 0, 0, 0.286);
+  justify-content: center;
+  align-items: center;
+}
+
+.game-over-content {
+  background: rgba(0, 0, 0, 0.681);
+  border-radius: 25px;
+  padding: 20px;
+  color: white;
+  font-weight: bold;
+  font-size: 2rem;
+}
+
 
 .card {
   padding: 2em;
