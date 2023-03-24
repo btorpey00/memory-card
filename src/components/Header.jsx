@@ -6,8 +6,8 @@ export default function Header(props) {
 
     return (
         <div className="header">
-            <h2>Memory Card Game</h2>
-            <p className="instructions">Do not click on the same image more than once</p>
+            <h2>Pokemon Memory Card Game</h2>
+            <p className="instructions">Do not click on the same character more than once</p>
             <p>Current Score: {currentScore} </p>
             <p>Best Score: {bestScore}</p>
         </div>

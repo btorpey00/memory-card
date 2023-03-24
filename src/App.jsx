@@ -8,18 +8,22 @@ import './App.css'
 function App() {
   const [currentScore, setCurrentScore] = useState(0)
   const [bestScore, setBestScore] = useState(0)
-  const [clickedCards, setClickedCards] = useState([])  
+  const [clickedCards, setClickedCards] = useState([])
+  const [gameOver, setGameOver] = useState(false)
+  const [gameWon, setGameWon] = useState(false)
   
 
   function onCardClick(e){
-    if (clickedCards.includes(e)) {
-      console.log('Already Clicked');
-      resetGame();
-    }
-    else{ 
-      incrementScore();
-      setClickedCards(clickedCards.concat(e));
-      console.log(clickedCards);
+    if (gameOver === false){
+      if (clickedCards.includes(e)) {
+        console.log('Already Clicked');
+        setGameOver(true);
+      }
+      else{ 
+        incrementScore();
+        setClickedCards(clickedCards.concat(e));
+        checkWin();
+      }
     }
   }
 
@@ -34,9 +38,24 @@ function App() {
     }
   }
 
+  function checkWin() {
+    if (currentScore + 1 === listItems.length){
+      setGameWon(true);
+      setGameOver(true);
+    }
+  }
+
   function resetGame() {
     setCurrentScore(0);
     setClickedCards([]);
+    setGameOver(false);
+    setGameWon(false);
+  }
+
+  let gameOverText = 'Game Over, you already clicked that one';
+
+  if (gameWon) {
+    gameOverText = 'Congratulations, you won!'
   }
 
   const listItems = cardArray().map((item) => <li key={item.name} ><Card onCardClick={onCardClick} name={item.name} src={item.src} /></li>);
@@ -47,11 +66,17 @@ function App() {
       <div>
         <ul className='card-container'>{shuffle(listItems)}</ul>
       </div>
+      <div className='game-over'>
+        {gameOver && gameOverText}
+      </div>      
       <div className="card">
         <button onClick={resetGame}>
-          Reset
+          {!gameOver && 'Reset'}
+          {gameOver && 'Play Again'}
         </button>
       </div>
+      
+      
     </div>
   )
 }
