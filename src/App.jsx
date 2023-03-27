@@ -4,6 +4,7 @@ import Card from './components/Card'
 import shuffle from 'lodash.shuffle'
 import cardArray from './components/CardInfo'
 import './App.css'
+import { useEffect } from 'react'
 
 function App() {
   const [currentScore, setCurrentScore] = useState(0)
@@ -11,12 +12,12 @@ function App() {
   const [clickedCards, setClickedCards] = useState([])
   const [gameOver, setGameOver] = useState(false)
   const [gameWon, setGameWon] = useState(false)
-  
+  const [pokeInfo, setPokeInfo] = useState([])
+  const [numCards, setNumCards] = useState(15)
 
   function onCardClick(e){
     if (gameOver === false){
       if (clickedCards.includes(e)) {
-        console.log('Already Clicked');
         setGameOver(true);
       }
       else{ 
@@ -25,6 +26,7 @@ function App() {
         checkWin();
       }
     }
+    console.log([...clickedCards, e])
   }
 
   function incrementScore() {
@@ -39,7 +41,7 @@ function App() {
   }
 
   function checkWin() {
-    if (currentScore + 1 === listItems.length){
+    if (currentScore + 1 === pokeInfo.length){
       setGameWon(true);
       setGameOver(true);
     }
@@ -57,14 +59,23 @@ function App() {
   if (gameWon) {
     gameOverText = 'Congratulations, you won!'
   }
+  
 
-  const listItems = cardArray().map((item) => <li key={item.name} ><Card onCardClick={onCardClick} name={item.name} src={item.src} /></li>);
+  useEffect(() => {
+    const getListItems = async () => {
+    let newList = await cardArray(numCards)
+    setPokeInfo([...newList])
+  }
+  getListItems()
+  }, [numCards])
+
+  const cardList = pokeInfo.map((item) => <li key={item.name} ><Card onCardClick={onCardClick} name={item.name} src={item.src} /></li>);
 
   return (
     <div className="App">
       <Header currentScore={currentScore} bestScore={bestScore} />
       <div>
-        <ul className='card-container'>{shuffle(listItems)}</ul>
+        <ul className='card-container'>{shuffle(cardList)}</ul>
       </div>
       <div className='game-over' style={{display: gameOver ? 'flex' : 'none'}} >
         <div className="game-over-content">

@@ -1,37 +1,37 @@
-import blastoisePic from '../assets/blastoise.svg'
-import bulbasaurPic from '../assets/bulbasaur.svg'
-import charizardPic from '../assets/charizard.svg'
-import gengarPic from '../assets/gengar.svg'
-import lucarioPic from '../assets/lucario.svg'
-import mewTwoPic from '../assets/mewTwo.svg'
-import pikachuPic from '../assets/pikachu.svg'
-import arcaninePic from '../assets/arcanine.svg'
-import blazikenPic from '../assets/blaziken.svg'
-import umbreonPic from '../assets/umbreon.svg'
-import eeveePic from '../assets/eevee.svg'
-import absolPic from '../assets/absol.svg'
-import ninetalesPic from '../assets/ninetales.svg'
-import infernapePic from '../assets/infernape.svg'
-import snorlaxPic from '../assets/snorlax.svg'
+import shuffle from 'lodash.shuffle'
 
-
-export default function cardArray() { 
-    const cardArray = [
-        {name: 'Blastoise', src: blastoisePic}, 
-        {name: 'Bulbasaur', src: bulbasaurPic}, 
-        {name: 'Charizard', src: charizardPic}, 
-        {name: 'Gengar', src: gengarPic}, 
-        {name: 'Lucario', src: lucarioPic}, 
-        {name: 'MewTwo', src: mewTwoPic},
-        {name: 'Pickachu', src: pikachuPic},
-        {name: 'Arcanine', src: arcaninePic},
-        {name: 'Blaziken', src: blazikenPic},
-        {name: 'Umbreon', src: umbreonPic},
-        {name: 'Eevee', src: eeveePic},
-        {name: 'Absol', src: absolPic},
-        {name: 'Ninetales', src: ninetalesPic},
-        {name: 'Infernape', src: infernapePic},
-        {name: 'Snorlax', src: snorlaxPic},
-    ]; 
-    return cardArray
+let indexArray = [];
+for (let i = 1; i <= 151; i++) {
+    indexArray.push(i);
 }
+
+function shuffleArray() {
+    let shuffledArray = shuffle(indexArray);
+    return shuffledArray
+}
+
+async function cardArray(numCards) {
+    let shuffledArray = shuffleArray();
+    let pokeArray = []
+    for (let i = 0; i < numCards; i++){
+        let input = shuffledArray[i]; 
+        try {
+            const response = await fetch('https://pokeapi.co/api/v2/pokemon/'+input);
+            const pokeData = await response.json();
+            let pokeSrc = pokeData.sprites.other.dream_world.front_default;
+            let pokemonNameData = pokeData.forms[0].name;
+            let pokeName = pokemonNameData.charAt(0).toUpperCase() + pokemonNameData.slice(1);
+            let newPoke = {name: pokeName, src: pokeSrc}
+            pokeArray.push(newPoke);
+        } catch (error) {
+            console.log(error);
+        }
+    }
+    return pokeArray;
+}
+
+export default cardArray
+
+
+
+
