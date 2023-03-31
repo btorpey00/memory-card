@@ -13,7 +13,10 @@ function App() {
   const [gameOver, setGameOver] = useState(false)
   const [gameWon, setGameWon] = useState(false)
   const [pokeInfo, setPokeInfo] = useState([])
-  const [numCards, setNumCards] = useState(15)
+  const [numCards, setNumCards] = useState(5)
+  const [currentLevel, setCurrentLevel] = useState(1)
+  const [levelWon, setLevelWon] = useState(false)
+  const [isLoading, setIsLoading] = useState(false)
 
   function onCardClick(e){
     if (gameOver === false){
@@ -26,7 +29,6 @@ function App() {
         checkWin();
       }
     }
-    console.log([...clickedCards, e])
   }
 
   function incrementScore() {
@@ -41,10 +43,21 @@ function App() {
   }
 
   function checkWin() {
-    if (currentScore + 1 === pokeInfo.length){
+    if (clickedCards.length + 1 === pokeInfo.length && currentLevel === 10){
       setGameWon(true);
       setGameOver(true);
+    } else if (clickedCards.length + 1 === pokeInfo.length && currentLevel < 10) {
+      setGameOver(true);
+      setLevelWon(true);
     }
+  }
+
+  function nextLevel() {
+    setCurrentLevel(x => x + 1)
+    setNumCards(x => x + 5)
+    setClickedCards([])
+    setGameOver(false)
+    setLevelWon(false)
   }
 
   function resetGame() {
@@ -52,6 +65,8 @@ function App() {
     setClickedCards([]);
     setGameOver(false);
     setGameWon(false);
+    setCurrentLevel(1);
+    setNumCards(5);
   }
 
   let gameOverText = 'Game Over, you already clicked that one';
@@ -59,12 +74,38 @@ function App() {
   if (gameWon) {
     gameOverText = 'Congratulations, you won!'
   }
-  
+
+  if (levelWon) {
+    gameOverText = 'Congratulations, you beat this level!'
+    console.log('level won')
+  }
+
+  function GameOverButton(){
+    if (levelWon) {
+      return(
+        <button onClick={nextLevel}>Next Level</button>
+        )
+      } else {
+        return (
+          <button onClick={resetGame}>Play Again</button>
+        )
+    }
+  }
+
+  function Loading() {
+    if (isLoading){
+      return(
+        <div> Loading... </div>
+      )
+    }
+  }
 
   useEffect(() => {
+    setIsLoading(true)
     const getListItems = async () => {
     let newList = await cardArray(numCards)
     setPokeInfo([...newList])
+    setIsLoading(false)
   }
   getListItems()
   }, [numCards])
@@ -73,14 +114,16 @@ function App() {
 
   return (
     <div className="App">
-      <Header currentScore={currentScore} bestScore={bestScore} />
+      <Header currentScore={currentScore} currentLevel={currentLevel} bestScore={bestScore} />
       <div>
         <ul className='card-container'>{shuffle(cardList)}</ul>
+        <Loading />
       </div>
       <div className='game-over' style={{display: gameOver ? 'flex' : 'none'}} >
         <div className="game-over-content">
-          <p>{gameOver && gameOverText}</p>
-          <button onClick={resetGame}>Play Again</button>
+          <p>{gameOverText}</p>
+          <GameOverButton />
+          {/* <button onClick={resetGame}>Play Again</button> */}
         </div>
       </div>      
       <div className="card">
