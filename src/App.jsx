@@ -92,14 +92,6 @@ function App() {
     }
   }
 
-  function Loading() {
-    if (isLoading){
-      return(
-        <div> Loading... </div>
-      )
-    }
-  }
-
   useEffect(() => {
     setIsLoading(true)
     const getListItems = async () => {
@@ -116,8 +108,7 @@ function App() {
     <div className="App">
       <Header currentScore={currentScore} currentLevel={currentLevel} bestScore={bestScore} />
       <div>
-        <ul className='card-container'>{shuffle(cardList)}</ul>
-        <Loading />
+        {isLoading ? <div> Loading... </div> : <ul className='card-container'>{shuffle(cardList)}</ul>}
       </div>
       <div className='game-over' style={{display: gameOver ? 'flex' : 'none'}} >
         <div className="game-over-content">
