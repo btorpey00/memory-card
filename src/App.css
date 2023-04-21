@@ -88,6 +88,43 @@ img {
   margin-bottom: 0;
 }
 
+@media (max-width: 600px) {
+
+  h1 {
+    font-size: 1.5rem;
+  }
+
+  .header-right{
+    display: flex;
+    width: 120%;
+  }
+
+  .score-display{
+    width: 33%;
+    text-align: start;
+  }
+
+  .card-container {
+    gap: 10px;
+  }
+
+  .game-card {
+    max-width: 80px;
+    max-height: 80px;
+    justify-content: center;
+    align-items: center;
+    padding: 3px;
+  }
+
+  img {
+    max-width: 80px;
+    max-height: 80px;
+  }
+  .game-card p {
+    display: none;
+  }
+}
+
 .game-card:hover {
   border: 3px solid yellow;
   position: relative;
