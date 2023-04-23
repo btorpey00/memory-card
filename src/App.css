@@ -125,10 +125,12 @@ img {
   }
 }
 
-.game-card:hover {
-  border: 3px solid yellow;
-  position: relative;
-  scale: 1.1;
+@media (min-width: 800px) {
+    .game-card:hover {
+    border: 3px solid yellow;
+    position: relative;
+    scale: 1.1;
+  }
 }
 
 .game-over {
